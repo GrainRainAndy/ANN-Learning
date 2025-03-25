@@ -1,3 +1,5 @@
+# Full Connected Neural Network
+
 import numpy as np
 
 from collections import OrderedDict

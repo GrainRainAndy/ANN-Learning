@@ -8,6 +8,9 @@ class SGD:
     def update(self, params, grads):
         for key in params.keys():
             params[key] -= self.lr * grads[key]
+    
+    def update_lr(self, lr):
+        self.lr = lr
 
 class Momentum:
     def __init__(self, lr=0.01, momentum=0.9):
@@ -24,6 +27,9 @@ class Momentum:
         for key in params.keys():
             self.v[key] = self.momentum * self.v[key] - self.lr * grads[key]
             params[key] += self.v[key]
+    
+    def update_lr(self, lr):
+        self.lr = lr
 
 class AdaGrad:
     def __init__(self, lr=0.01):

@@ -4,8 +4,8 @@ import pickle
 import matplotlib.pyplot as plt
 
 from dataset.mnist.mnist import load_mnist
-from models.FCNN import TwoHiddenLayersNet
-from utils.earlystopping import AvgEarlyStopping
+from models.FCNN import *
+from utils.earlystopping import *
 from utils.optimizer import *
 
 if __name__ == '__main__':
@@ -23,11 +23,12 @@ if __name__ == '__main__':
         network = TwoHiddenLayersNet(input_size=784, hidden_size1=100, hidden_size2=50, output_size=10, reg_lambda=1e-3)
         base_loss = None
 
-    iters_num = 100000
+    iters_num = 50000
     train_size = x_train.shape[0]
     batch_size = 100
     learning_rate = 0.1
-    optimizer = AdaGrad(learning_rate)
+    optimizer = SGD(learning_rate)
+    # optimizer = AdaGrad(learning_rate)
     train_loss_list = []
     train_loss_show_list = []
     train_acc_list = []
@@ -45,8 +46,9 @@ if __name__ == '__main__':
         x_batch = x_train[batch_mask]
         t_batch = t_train[batch_mask]
         # Dynamic learning rate
-        # if i % 1000 == 0:
-        #     learning_rate *= 0.9
+        if i % 1000 == 0:
+            learning_rate *= 0.9
+            optimizer.update_lr(learning_rate)
 
         grads = network.gradient(x_batch, t_batch)
         params = network.params
