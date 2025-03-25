@@ -1,5 +1,6 @@
 import os
 import pickle
+import argparse
 
 import matplotlib.pyplot as plt
 
@@ -9,9 +10,13 @@ from utils.earlystopping import *
 from utils.optimizer import *
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Programme to train model')
+    parser.add_argument('--c', type=bool, help='Continue training', default=False)
+    args = parser.parse_args()
+
     (x_train, t_train), (x_test, t_test) = load_mnist(normalize=True, one_hot_label=True)
 
-    continueTraining = True
+    continueTraining = args.c
     modelsSavePath = ".//saved_params"
     modelsAutoSavePath = modelsSavePath + "//autosave"
     diagramsSavePath = ".//diagrams//" + "diagram.png"
@@ -36,6 +41,7 @@ if __name__ == '__main__':
 
     iter_per_epoch = max(train_size / batch_size, 1)
     epochs_num = int(iters_num // iter_per_epoch) + 1
+    epochs_digits = len(str(epochs_num))
     patience = iters_num * 0.0002
     min_delta = network.reg_lambda * 0.1
     early_stopping = AvgEarlyStopping(patience, min_delta)
@@ -64,7 +70,7 @@ if __name__ == '__main__':
             test_acc_list.append(test_acc)
             # loss = network.loss(x_test, t_test)
             train_loss_show_list.append(loss)
-            print(f"=== Epoch: [{epoch}/{epochs_num}], Train acc: {train_acc:.04f}, Test acc: {test_acc:.04f}, Loss: {loss:.04f} ===")
+            print(f"=== Epoch: [{epoch:}/{epochs_num}], Train acc: {train_acc:.04f}, Test acc: {test_acc:.04f}, Loss: {loss:.04f} ===")
 
             with open(f"{modelsAutoSavePath}//autosave_{epoch}.pkl", "wb") as f:
                 pickle.dump((network, loss), f)
@@ -106,7 +112,7 @@ if __name__ == '__main__':
     ax2.plot(epochs, train_loss_show_list, label='Loss', color='r')
     ax2.set_ylabel('Loss')
     ax2.tick_params(axis='y')
-    ax2.set_ylim(0, max(train_loss_show_list) * 1.3)
+    ax2.set_ylim(0, max(1, int(max(train_loss_show_list) * 1.3)))
 
     fig.tight_layout()
     lines, labels = ax1.get_legend_handles_labels()
