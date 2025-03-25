@@ -1,4 +1,5 @@
 import numpy as np
+
 from .math_func import softmax, cross_entropy_error
 
 

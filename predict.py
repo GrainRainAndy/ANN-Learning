@@ -1,9 +1,13 @@
-import numpy as np
 import pickle
+
+import numpy as np
+
 from tools.pic2mnist import img2mnist
 
 if __name__ == '__main__':
-    modelsSavePath = ".//saved_params//autosave//best_model.pkl"
+    # modelsSavePath = ".//saved_params//autosave//best_model.pkl"
+    # modelsSavePath = ".//saved_params//manual//THLN_SGD_L2reg_1e-3_DyLR_std.pkl"
+    modelsSavePath = ".//saved_params//manual//best_model.pkl"
 
     (network, loss) = pickle.load(open(modelsSavePath, 'rb'))
 
