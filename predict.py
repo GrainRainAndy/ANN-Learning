@@ -7,7 +7,7 @@ if __name__ == '__main__':
 
     (network, loss) = pickle.load(open(modelsSavePath, 'rb'))
 
-    img_path = ".//dataset//testPic//7(1).jpg"
+    img_path = ".//dataset//testPic//4.jpg"
     img = img2mnist(img_path)
 
     y = network.predict(img)

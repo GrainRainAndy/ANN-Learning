@@ -11,13 +11,13 @@ from utils.optimizer import *
 if __name__ == '__main__':
     (x_train, t_train), (x_test, t_test) = load_mnist(normalize=True, one_hot_label=True)
 
-    continueTraining = False
+    continueTraining = True
     modelsSavePath = ".//saved_params"
     modelsAutoSavePath = modelsSavePath + "//autosave"
     diagramsSavePath = ".//diagrams//" + "diagram.png"
 
     if continueTraining:
-        (network, base_loss) = pickle.load(open(modelsSavePath, 'rb'))
+        (network, base_loss) = pickle.load(open(modelsAutoSavePath + "//best_model.pkl", 'rb'))
     else:
         # network = TwoLayerNet(input_size=784, hidden_size=50, output_size=10, reg_lambda = 1e-3)
         network = TwoHiddenLayersNet(input_size=784, hidden_size1=100, hidden_size2=50, output_size=10, reg_lambda=1e-3)
@@ -106,7 +106,7 @@ if __name__ == '__main__':
     ax2.plot(epochs, train_loss_show_list, label='Loss', color='r')
     ax2.set_ylabel('Loss')
     ax2.tick_params(axis='y')
-    ax2.set_ylim(0, int(max(train_loss_show_list) * 1.3))
+    ax2.set_ylim(0, max(train_loss_show_list) * 1.3)
 
     fig.tight_layout()
     lines, labels = ax1.get_legend_handles_labels()
