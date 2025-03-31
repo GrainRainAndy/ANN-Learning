@@ -34,3 +34,12 @@ __pycache__/
 ###############
 
 .vscode/
+saved_params/autosave/autosave_1.pkl
+
+
+################
+### Training ###
+################
+
+autosave/
+
