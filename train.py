@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 from dataset.mnist.mnist import load_mnist
 from models.FCNN import *
-from models.LeNet_5 import LeNet_5
+from models.LeNet_5 import *
 from utils.earlystopping import *
 from utils.optimizer import *
 
@@ -25,19 +25,19 @@ if __name__ == '__main__':
     if continueTraining:
         with open(modelsAutoSavePath + "//best_model_params.pkl", 'rb') as f:
             network_params = pickle.load(f)
-        network = LeNet_5(input_dim=(1, 28, 28), output_size=10, weight_init_std=0.01)
+        network = LeNet_5_M(input_dim=(1, 28, 28), output_size=10, weight_init_std=0.01)
         network.params = network_params
         base_loss = None
     else:
-        network = LeNet_5(input_dim=(1, 28, 28), output_size=10, weight_init_std=0.01)
+        network = LeNet_5_M(input_dim=(1, 28, 28), output_size=10, weight_init_std=0.01)
         base_loss = None
 
     iters_num = 50000
     train_size = x_train.shape[0]
     batch_size = 100
     learning_rate = 0.1
-    optimizer = SGD(learning_rate)
-    # optimizer = AdaGrad(learning_rate)
+    # optimizer = SGD(learning_rate)
+    optimizer = AdaGrad(learning_rate)
     train_loss_list = []
     train_loss_show_list = []
     train_acc_list = []
@@ -56,9 +56,9 @@ if __name__ == '__main__':
         x_batch = x_train[batch_mask]
         t_batch = t_train[batch_mask]
         # Dynamic learning rate
-        if i % 1000 == 0:
-            learning_rate *= 0.9
-            optimizer.update_lr(learning_rate)
+        # if i % 1000 == 0:
+        #     learning_rate *= 0.9
+        #     optimizer.update_lr(learning_rate)
 
         grads = network.gradient(x_batch, t_batch)
         params = network.params

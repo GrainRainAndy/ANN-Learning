@@ -3,9 +3,10 @@ import pickle
 import argparse
 
 import numpy as np
+from torch import newaxis
 
 from tools.pic2mnist import img2mnist
-from models.LeNet_5 import LeNet_5
+from models.LeNet_5 import *
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Predict number from image')
@@ -18,11 +19,12 @@ if __name__ == '__main__':
     with open(modelsSavePath, 'rb') as f:
         network_params = pickle.load(f)
 
-    network = LeNet_5(input_dim=(1, 28, 28), output_size=10, weight_init_std=0.01)
+    network = LeNet_5_M(input_dim=(1, 28, 28), output_size=10, weight_init_std=0.01, train_flg=False)
     network.params = network_params
 
     img_path = args.i
-    img = img2mnist(img_path)
+    img = img2mnist(img_path, flatten=False)
+    img = img[newaxis, newaxis, :, :]
 
     y = network.predict(img)
     print(f"Predicted number is: {np.argmax(y)}")

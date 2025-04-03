@@ -1,14 +1,15 @@
 from PIL import Image
 import numpy as np
 
-def img2mnist(img_path):
+def img2mnist(img_path, flatten=True):
     img = Image.open(img_path).convert('L')
     img = img.resize((28, 28))
     img = np.array(img)
-    img = img.reshape(1, 784)
     img = img.astype(np.float32)
     img = img / 255.0
-    img = img.flatten()
+    if flatten:
+        img = img.reshape(1, 784)
+        img = img.flatten()
     return img
 
 if __name__ == '__main__':
